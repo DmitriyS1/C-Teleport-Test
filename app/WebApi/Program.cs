@@ -1,5 +1,6 @@
 using System.Threading.RateLimiting;
 using CTeleport.Weather.Api.Core.Configurations;
+using CTeleport.Weather.Api.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,8 +24,9 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRateLimiter();
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

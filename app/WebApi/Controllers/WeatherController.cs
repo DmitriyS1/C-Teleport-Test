@@ -1,3 +1,4 @@
+using CTeleport.Weather.Api.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CTeleport.Weather.Api.Controllers;
@@ -6,27 +7,24 @@ namespace CTeleport.Weather.Api.Controllers;
 [Route("[controller]")]
 public class WeatherController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
+    private readonly IWeatherService _weatherService;
     private readonly ILogger<WeatherController> _logger;
 
-    public WeatherController(ILogger<WeatherController> logger)
+    public WeatherController(
+        ILogger<WeatherController> logger,
+        IWeatherService weatherService)
     {
         _logger = logger;
+        _weatherService = weatherService;
     }
 
-    [HttpGet()]
-    public async Task<IEnumerable<WeatherForecast>> Get()
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<OkResult> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        
+        return Ok();
     }
 }
