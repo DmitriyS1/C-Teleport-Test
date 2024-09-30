@@ -2,10 +2,18 @@ using System.Threading.RateLimiting;
 using CTeleport.Weather.Api.Core.Configurations;
 using CTeleport.Weather.Api.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.RateLimiting;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables(prefix: "CTELEPORT_WEATHER_API_");
 // Add services to the container.
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.WithProperty("Application", "CTeleport Weather API")
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog(Log.Logger);
 
 // Rate limiter should prevent DoS attacks especially when we don't have any authentication and authorization.
 var rateLimiterSettings = GetRateLimiterSettings(builder.Configuration);
