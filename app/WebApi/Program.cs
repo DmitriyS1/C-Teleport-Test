@@ -3,7 +3,7 @@ using CTeleport.Weather.Api.Core.Configurations;
 using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration.AddEnvironmentVariables(prefix: "CTELEPORT_WEATHER_API_");
 // Add services to the container.
 
 // Rate limiter should prevent DoS attacks especially when we don't have any authentication and authorization.
@@ -23,6 +23,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseRateLimiter();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -33,7 +34,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers().RequireRateLimiting("default");
 
 app.Run();
 

@@ -1,23 +1,22 @@
-namespace CTeleport.Weather.Api.Core.Configurations
+namespace CTeleport.Weather.Api.Core.Configurations;
+
+/// <summary>
+/// Rate limiter settings
+/// </summary>
+public record RateLimiterSettings
 {
     /// <summary>
-    /// Rate limiter settings
+    /// Amount of allowed requests per WindowInSeconds period. Must be greater than 0.
     /// </summary>
-    public record RateLimiterSettings
-    {
-        /// <summary>
-        /// Amount of allowed requests per WindowInSeconds period. Must be greater than 0.
-        /// </summary>
-        public uint PermitLimit { get; set; }
+    public uint PermitLimit { get; set; }
 
-        /// <summary>
-        /// Window in seconds to evaluate the rate limit
-        /// </summary>
-        public uint WindowInSeconds { get; set; }
+    /// <summary>
+    /// Window in seconds to evaluate the rate limit
+    /// </summary>
+    public uint WindowInSeconds { get; set; }
 
-        /// <summary>
-        /// Maximum cumulative permit count of queued acquisition requests
-        /// </summary>
-        public uint QueueLimit { get; set; }
-    }
+    /// <summary>
+    /// Maximum cumulative permit count of queued acquisition requests
+    /// </summary>
+    public uint QueueLimit { get; set; }
 }

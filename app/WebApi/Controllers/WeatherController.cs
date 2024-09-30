@@ -19,7 +19,7 @@ public class WeatherController : ControllerBase
     }
 
     [HttpGet()]
-    public IEnumerable<WeatherForecast> Get()
+    public async Task<IEnumerable<WeatherForecast>> Get()
     {
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
