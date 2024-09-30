@@ -1,5 +1,7 @@
 using System.Threading.RateLimiting;
 using CTeleport.Weather.Api.Core.Configurations;
+using CTeleport.Weather.Api.Infrastructure.Http;
+using CTeleport.Weather.Api.Infrastructure.Http.Interfaces;
 using CTeleport.Weather.Api.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
@@ -29,9 +31,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpClient<IWeatherHttpClient, WeatherHttpClient>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseSerilogRequestLogging();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRateLimiter();
 if (!app.Environment.IsProduction())
