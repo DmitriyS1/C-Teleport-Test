@@ -3,6 +3,7 @@ using CTeleport.Weather.Api.Core.Configurations;
 using CTeleport.Weather.Api.Infrastructure.Http;
 using CTeleport.Weather.Api.Infrastructure.Http.Interfaces;
 using CTeleport.Weather.Api.Infrastructure.Middlewares;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
 
@@ -29,6 +30,7 @@ builder.Services.AddRateLimiter(opts => opts.AddFixedWindowLimiter(policyName: "
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient<IWeatherHttpClient, WeatherHttpClient>();
