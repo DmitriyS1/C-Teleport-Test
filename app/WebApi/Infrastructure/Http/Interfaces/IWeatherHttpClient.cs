@@ -1,5 +1,7 @@
 using CTeleport.Weather.Api.Infrastructure.Http.Responses;
 
+using CityInformation = OneOf.OneOf<CTeleport.Weather.Api.Infrastructure.Http.Responses.CityInformation, OneOf.Types.Error<CTeleport.Weather.Api.Infrastructure.Http.Responses.ErrorResponse>>;
+
 namespace CTeleport.Weather.Api.Infrastructure.Http.Interfaces;
 
 public interface IWeatherHttpClient {

@@ -34,6 +34,7 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient<IWeatherHttpClient, WeatherHttpClient>();
+builder.Services.Configure<WeatherHttpClientConfiguration>(builder.Configuration.GetSection(nameof(WeatherHttpClientConfiguration)));
 
 var app = builder.Build();
 
@@ -54,7 +55,6 @@ app.UseAuthorization();
 app.MapControllers().RequireRateLimiting("default");
 
 app.Run();
-
 
 
 static RateLimiterSettings GetRateLimiterSettings(IConfiguration configuration)
