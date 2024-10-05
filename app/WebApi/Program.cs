@@ -1,11 +1,14 @@
 using System.Threading.RateLimiting;
 using CTeleport.Weather.Api.Core.Configurations;
+using CTeleport.Weather.Api.Infrastructure.Cache;
+using CTeleport.Weather.Api.Infrastructure.Cache.Interfaces;
 using CTeleport.Weather.Api.Infrastructure.Http;
 using CTeleport.Weather.Api.Infrastructure.Http.Interfaces;
 using CTeleport.Weather.Api.Infrastructure.Middlewares;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables(prefix: "CTELEPORT_WEATHER_API_");
@@ -34,6 +37,8 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient<IWeatherHttpClient, WeatherHttpClient>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
+builder.Services.AddSingleton<IRedisService, RedisService>();
 builder.Services.Configure<WeatherHttpClientConfiguration>(builder.Configuration.GetSection(nameof(WeatherHttpClientConfiguration)));
 
 var app = builder.Build();

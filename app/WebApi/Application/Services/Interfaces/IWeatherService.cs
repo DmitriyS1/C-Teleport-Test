@@ -1,5 +1,3 @@
-using CTeleport.Weather.Api.Application.Responses;
-
 using WeatherResponse = OneOf.OneOf<CTeleport.Weather.Api.Application.Responses.WeatherInformation, OneOf.Types.Error<string[]>>;
 
 namespace CTeleport.Weather.Api.Application.Services.Interfaces;
