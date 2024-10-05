@@ -2,10 +2,18 @@ version: '3.7'
 
 services:
   weather-api:
-    build: WebApi/Dockerfile
+    build: 
+      context: WebApi
+      dockerfile: Dockerfile
     container_name: weather-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - CTELEPORT_WEATHER_API_Redis:ConnectionString=redis:6379
+      - CTELEPORT_WEATHER_API_WeatherHttpClientConfiguration:BaseUrl=https://api.openweathermap.org/
+      - CTELEPORT_WEATHER_API_WeatherHttpClientConfiguration:ApiKey=YOUR_API_KEY
+      - CTELEPORT_WEATHER_API_WeatherHttpClientConfiguration:MaxResponseContentBufferSize=3000
     ports:
-      - "5000:80"
+      - "5944:8080"
     depends_on:
       - redis
     networks:

@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
+using CTeleport.Weather.Api.Application.Services;
+using CTeleport.Weather.Api.Application.Services.Interfaces;
 using CTeleport.Weather.Api.Core.Configurations;
 using CTeleport.Weather.Api.Infrastructure.Cache;
 using CTeleport.Weather.Api.Infrastructure.Cache.Interfaces;
@@ -39,10 +41,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<WeatherHttpClientConfiguration>(builder.Configuration.GetSection(nameof(WeatherHttpClientConfiguration)));
 builder.Services.AddHttpClient<IWeatherHttpClient, WeatherHttpClient>();
+
 builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(builder.Configuration.GetSection("Redis")["ConnectionString"]));
 builder.Services.AddSingleton<IRedisService, RedisService>();
-builder.Services.Configure<WeatherHttpClientConfiguration>(builder.Configuration.GetSection(nameof(WeatherHttpClientConfiguration)));
+
+builder.Services.AddScoped<IWeatherService, WeatherService>();
 
 var app = builder.Build();
 

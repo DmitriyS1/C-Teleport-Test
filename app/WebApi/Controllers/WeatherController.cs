@@ -10,13 +10,10 @@ namespace CTeleport.Weather.Api.Controllers;
 public class WeatherController : ControllerBase
 {
     private readonly IWeatherService _weatherService;
-    private readonly ILogger<WeatherController> _logger;
 
     public WeatherController(
-        ILogger<WeatherController> logger,
         IWeatherService weatherService)
     {
-        _logger = logger;
         _weatherService = weatherService;
     }
 
@@ -26,6 +23,11 @@ public class WeatherController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Get([FromQuery] WeatherRequest request, CancellationToken cancellationToken)
     {
+        if (!ModelState.IsValid)
+        {
+            return UnprocessableEntity(ModelState);
+        }
+
         var result = await _weatherService.GetWeatherAsync("zip", "countryCode", 0, "measureUnit", cancellationToken);
         return result.Match<IActionResult>(
             Ok,
