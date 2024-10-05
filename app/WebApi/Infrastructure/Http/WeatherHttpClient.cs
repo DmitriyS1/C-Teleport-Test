@@ -5,6 +5,7 @@ using CTeleport.Weather.Api.Infrastructure.Http.Responses;
 using Microsoft.Extensions.Options;
 using OneOf.Types;
 using CityInformation = OneOf.OneOf<CTeleport.Weather.Api.Infrastructure.Http.Responses.CityInformation, OneOf.Types.Error<CTeleport.Weather.Api.Infrastructure.Http.Responses.ErrorResponse>>;
+using WeatherInformation = OneOf.OneOf<CTeleport.Weather.Api.Infrastructure.Http.Responses.WeatherInformation, OneOf.Types.Error<CTeleport.Weather.Api.Infrastructure.Http.Responses.ErrorResponse>>;
 
 namespace CTeleport.Weather.Api.Infrastructure.Http;
 
@@ -41,8 +42,19 @@ public class WeatherHttpClient : IWeatherHttpClient
     }
 
     /// <inheritdoc />
-    public async Task<WeatherInformation> GetWeatherInformationAsync(double lat, double lon, long time, CancellationToken cancellationToken = default)
+    public async Task<WeatherInformation> GetWeatherInformationAsync(double lat, double lon, long time, string units, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var result = await _httpClient.GetAsync($"data/3.0/onecall/timemachine?lat={lat}&lon={lon}&dt={time}&appid={_configuration.ApiKey}", cancellationToken);
+        if (result.IsSuccessStatusCode) {
+            var content = await result.Content.ReadAsStringAsync(cancellationToken);
+            var weatherInformationResult = JsonSerializer.Deserialize<Responses.WeatherInformation>(content);
+            return weatherInformationResult;
+        }
+
+        return new Error<ErrorResponse>(new ErrorResponse
+        {
+            StatusCode = result.StatusCode,
+            Message = result.ReasonPhrase
+        });
     }
 }

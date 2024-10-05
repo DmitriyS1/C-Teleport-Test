@@ -1,6 +1,5 @@
-using CTeleport.Weather.Api.Infrastructure.Http.Responses;
-
 using CityInformation = OneOf.OneOf<CTeleport.Weather.Api.Infrastructure.Http.Responses.CityInformation, OneOf.Types.Error<CTeleport.Weather.Api.Infrastructure.Http.Responses.ErrorResponse>>;
+using WeatherInformation = OneOf.OneOf<CTeleport.Weather.Api.Infrastructure.Http.Responses.WeatherInformation, OneOf.Types.Error<CTeleport.Weather.Api.Infrastructure.Http.Responses.ErrorResponse>>;
 
 namespace CTeleport.Weather.Api.Infrastructure.Http.Interfaces;
 
@@ -21,7 +20,8 @@ public interface IWeatherHttpClient {
     /// <param name="lat">Latitude</param>
     /// <param name="lon">Longitude</param>
     /// <param name="time">Time in unix format</param>
+    /// <param name="units">Units of measurement (standard, metric, imperial)</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Weather information <see cref="WeatherInformation"/></returns>
-    Task<WeatherInformation> GetWeatherInformationAsync(double lat, double lon, long time, CancellationToken cancellationToken = default);
+    Task<WeatherInformation> GetWeatherInformationAsync(double lat, double lon, long time, string units, CancellationToken cancellationToken = default);
 }
