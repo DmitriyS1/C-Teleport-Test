@@ -1,3 +1,4 @@
+using CTeleport.Weather.Api.Application.Responses;
 using CTeleport.Weather.Api.Application.Services.Interfaces;
 using CTeleport.Weather.Api.WebApi.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ public class WeatherController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<WeatherInformation>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Get([FromQuery] WeatherRequest request, CancellationToken cancellationToken)

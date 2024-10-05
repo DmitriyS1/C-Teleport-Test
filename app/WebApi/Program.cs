@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using CTeleport.Weather.Api.Core.Configurations;
 using CTeleport.Weather.Api.Infrastructure.Cache;
@@ -30,14 +31,16 @@ builder.Services.AddRateLimiter(opts => opts.AddFixedWindowLimiter(policyName: "
     limiterOpts.QueueLimit = (int)rateLimiterSettings.QueueLimit;
 }));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+    
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient<IWeatherHttpClient, WeatherHttpClient>();
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(builder.Configuration.GetSection("Redis")["ConnectionString"]));
 builder.Services.AddSingleton<IRedisService, RedisService>();
 builder.Services.Configure<WeatherHttpClientConfiguration>(builder.Configuration.GetSection(nameof(WeatherHttpClientConfiguration)));
 

@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  weather-api:
+    build: WebApi/Dockerfile
+    container_name: weather-api
+    ports:
+      - "5000:80"
+    depends_on:
+      - redis
+    networks:
+      - weather-api-network
+
+networks:
+  weather-api-network:
+    driver: bridge
