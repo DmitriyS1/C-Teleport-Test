@@ -10,7 +10,8 @@ public interface IWeatherService
     /// <param name="zip">Zip code</param>
     /// <param name="countryCode">Country code in ISO3166 format</param>
     /// <param name="date">Date in unix format</param>
+    /// <param name="measureUnit">Units of measurement (standard, metric, imperial)</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Weather information or Error</returns>
-    Task<WeatherResponse> GetWeatherAsync(string zip, string countryCode, long date, CancellationToken cancellationToken = default);
+    Task<WeatherResponse> GetWeatherAsync(string zip, string countryCode, long date, string measureUnit, CancellationToken cancellationToken = default);
 }

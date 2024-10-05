@@ -13,8 +13,7 @@ public record WeatherInformation(
     double Clouds, 
     double Uvi, 
     double Visibility, 
-    double Rain, 
-    double Snow, 
+    string State,
     string Description, 
     string Icon, 
     long Time
