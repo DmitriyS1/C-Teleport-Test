@@ -1,7 +1,7 @@
-namespace CTeleport.Weather.Api.WebApi.Validators;
-
-using CTeleport.Weather.Api.WebApi.Requests;
+using CTeleport.Weather.Api.WebApi.Application.Requests;
 using FluentValidation;
+
+namespace CTeleport.Weather.Api.WebApi.Validators;
 
 public class WeatherRequestValidator : AbstractValidator<WeatherRequest>
 {

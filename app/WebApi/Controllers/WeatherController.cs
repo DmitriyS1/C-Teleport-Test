@@ -1,6 +1,6 @@
 using CTeleport.Weather.Api.Application.Responses;
 using CTeleport.Weather.Api.Application.Services.Interfaces;
-using CTeleport.Weather.Api.WebApi.Requests;
+using CTeleport.Weather.Api.WebApi.Application.Requests;
 using CTeleport.Weather.Api.WebApi.Validators;
 using Microsoft.AspNetCore.Mvc;
 

@@ -7,7 +7,7 @@ using CTeleport.Weather.Api.Infrastructure.Cache;
 using CTeleport.Weather.Api.Infrastructure.Cache.Interfaces;
 using CTeleport.Weather.Api.Infrastructure.Http;
 using CTeleport.Weather.Api.Infrastructure.Http.Interfaces;
-using CTeleport.Weather.Api.Infrastructure.Middlewares;
+using CTeleport.Weather.Api.Core.Middlewares;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.RateLimiting;
 using Serilog;

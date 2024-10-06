@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace CTeleport.Weather.Api.Infrastructure.Middlewares;
+namespace CTeleport.Weather.Api.Core.Middlewares;
 
 public class ExceptionHandlingMiddleware
 {

@@ -1,4 +1,4 @@
-namespace CTeleport.Weather.Api.WebApi.Requests;
+namespace CTeleport.Weather.Api.WebApi.Application.Requests;
 
 
 /// <summary>
