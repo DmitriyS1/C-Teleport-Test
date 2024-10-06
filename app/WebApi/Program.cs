@@ -12,6 +12,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
 using StackExchange.Redis;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables(prefix: "CTELEPORT_WEATHER_API_");
@@ -36,6 +37,7 @@ builder.Services.AddRateLimiter(opts => opts.AddFixedWindowLimiter(policyName: "
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddHealthChecks().AddRedis(builder.Configuration.GetSection("Redis")["ConnectionString"]);
+builder.Services.UseHttpClientMetrics();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -66,6 +68,8 @@ app.UseHttpsRedirection();
 
 app.MapControllers().RequireRateLimiting("default");
 app.MapHealthChecks("/_health");
+app.UseMetricServer("/_metrics");
+app.UseHttpMetrics();
 
 app.Run();
 
