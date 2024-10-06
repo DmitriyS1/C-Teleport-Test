@@ -38,14 +38,12 @@ public class WeatherService : IWeatherService
             await _redisService.SetAsync($"{zip}-{countryCode}", cityInformation);
         }
 
-        // TODO: Make request for the weather information
         var weatherResponse = await _weatherHttpClient.GetWeatherInformationAsync(cityInformation.Lat, cityInformation.Lon, date, measureUnit, cancellationToken);
         if (weatherResponse.IsT1) {
             _logger.LogError("Error while getting weather information: {Error}", weatherResponse.AsT1.Value.Message);
             return new Error<string[]>(new[] { weatherResponse.AsT1.Value.Message });
         }
 
-        // Return weather information
         return new WeatherInformation(
             weatherResponse.AsT0.Data.Temp,
             weatherResponse.AsT0.Data.FeelsLike,
