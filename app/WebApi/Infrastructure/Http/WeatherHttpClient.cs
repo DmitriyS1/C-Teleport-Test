@@ -30,7 +30,11 @@ public class WeatherHttpClient : IWeatherHttpClient
         var result = await _httpClient.GetAsync($"geo/1.0/zip?zip={zip},{countryCode}&appid={_configuration.ApiKey}", cancellationToken);
         if (result.IsSuccessStatusCode) {
             var content = await result.Content.ReadAsStringAsync(cancellationToken);
-            var cityInformationResult = JsonSerializer.Deserialize<Responses.CityInformation>(content);
+            var cityInformationResult = JsonSerializer.Deserialize<Responses.CityInformation>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
             return cityInformationResult;
         }
 
@@ -47,7 +51,11 @@ public class WeatherHttpClient : IWeatherHttpClient
         var result = await _httpClient.GetAsync($"data/3.0/onecall/timemachine?lat={lat}&lon={lon}&dt={time}&appid={_configuration.ApiKey}", cancellationToken);
         if (result.IsSuccessStatusCode) {
             var content = await result.Content.ReadAsStringAsync(cancellationToken);
-            var weatherInformationResult = JsonSerializer.Deserialize<Responses.WeatherInformation>(content);
+            var weatherInformationResult = JsonSerializer.Deserialize<Responses.WeatherInformation>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            
             return weatherInformationResult;
         }
 

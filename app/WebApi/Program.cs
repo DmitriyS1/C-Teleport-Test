@@ -63,8 +63,6 @@ if (!app.Environment.IsProduction())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.MapControllers().RequireRateLimiting("default");
 
 app.Run();

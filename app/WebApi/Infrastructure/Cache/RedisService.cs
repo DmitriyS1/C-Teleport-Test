@@ -13,17 +13,17 @@ public class RedisService : IRedisService {
     }
 
     /// <inheritdoc/>
-    public async Task<T?> GetAsync<T>(string key)
+    public async Task<T?> GetAsync<T>(string key) where T : class
     {
-        var db = _connectionMultiplexer.GetDatabase();
+        var db = _connectionMultiplexer.GetDatabase(0);
         var value = await db.StringGetAsync(key);
-        return value.HasValue ? JsonSerializer.Deserialize<T>(value) : default;
+        return value.HasValue ? JsonSerializer.Deserialize<T>(value) : null;
     }
 
     /// <inheritdoc/>
-    public async Task SetAsync<T>(string key, T value, TimeSpan? expiry = null)
+    public async Task SetAsync<T>(string key, T value, TimeSpan? expiry = null) where T : class
     {
-        var db = _connectionMultiplexer.GetDatabase();
+        var db = _connectionMultiplexer.GetDatabase(0);
         await db.StringSetAsync(key, JsonSerializer.Serialize(value), expiry);
     }
 }
