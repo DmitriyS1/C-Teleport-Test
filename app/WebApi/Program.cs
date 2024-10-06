@@ -35,7 +35,8 @@ builder.Services.AddRateLimiter(opts => opts.AddFixedWindowLimiter(policyName: "
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-    
+builder.Services.AddHealthChecks().AddRedis(builder.Configuration.GetSection("Redis")["ConnectionString"]);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidationAutoValidation();
@@ -64,6 +65,7 @@ if (!app.Environment.IsProduction())
 app.UseHttpsRedirection();
 
 app.MapControllers().RequireRateLimiting("default");
+app.MapHealthChecks("/_health");
 
 app.Run();
 
