@@ -40,14 +40,18 @@ public class WeatherControllerTests {
         Assert.IsType<OkObjectResult>(result);
     }
 
-    [Fact]
-    public async Task Given_InvalidRequest_When_Get_Then_ReturnsUnprocessableEntityResult() {
+    [Theory]
+    [InlineData(null, "US", true, MeasureUnitsEnum.Standard)]
+    [InlineData("12345", null, true, MeasureUnitsEnum.Standard)]
+    [InlineData("12345", "US", false, MeasureUnitsEnum.Standard)]
+    [InlineData("12345", "US", true, null)]
+    public async Task Given_InvalidRequest_When_Get_Then_ReturnsUnprocessableEntityResult(string? zip, string? countryCode, bool isValidDate, MeasureUnitsEnum? units) {
         // Arrange
         var weatherRequest = new WeatherRequest {
-            Zip = "12345",
-            CountryCode = "US",
-            Date = new DateTime(1950, 1, 1),
-            Units = MeasureUnitsEnum.Standard
+            Zip = zip,
+            CountryCode = countryCode,
+            Date = isValidDate ? DateTime.UtcNow : new DateTime(1950, 01, 01),
+            Units = units
         };
 
         var cancellationToken = CancellationToken.None;
