@@ -40,3 +40,7 @@ To test the app, you have to provide your API key. Request it on OpenWheather we
   }).
 
 `localhost:5944/api/v1/weather?zip="35007"&countryCode="ES"&date=2024-10-5&units=standard` this will return you a wheather for Las Palmas de Gran Canaria for 5th of October 2024. You can use different zip code and Country code to get wheather for a different place
+
+## Limitations
+
+You can get Wheather forecast for 4 days ahead or until 1979-01-01.
