@@ -25,7 +25,6 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog(Log.Logger);
 
-// Rate limiter should prevent DoS attacks especially when we don't have any authentication and authorization.
 var rateLimiterSettings = GetRateLimiterSettings(builder.Configuration);
 builder.Services.AddRateLimiter(opts => opts.AddFixedWindowLimiter(policyName: "default", limiterOpts => {
     limiterOpts.PermitLimit = (int)rateLimiterSettings.PermitLimit;
@@ -39,7 +38,6 @@ builder.Services.AddControllers()
 builder.Services.AddHealthChecks().AddRedis(builder.Configuration.GetSection("Redis")["ConnectionString"]);
 builder.Services.UseHttpClientMetrics();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddSwaggerGen();
